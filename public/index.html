@@ -1,48 +1,135 @@
 <!doctype html>
 <html lang="en">
-	<head>
-		<!-- Basic Page Needs
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-		<meta charset="utf-8" />
-		<title>Chat!</title>
-		<meta name="description" content="" />
-		<meta name="author" content="" />
+  <head>
+    <meta charset="utf-8" />
+    <title>Chat</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-		<!-- Mobile Specific Metas
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Modern Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
 
-		<!-- FONT
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="icon" type="image/ico" href="favicon.ico" />
+    <script src="/dist/index.js" type="module"></script>
 
-		<!-- CSS
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-		<link rel="stylesheet" href="css/normalize.css" />
-		<link rel="stylesheet" href="css/skeleton.css" />
-		<link rel="stylesheet" href="styles.css" />
+    <style>
+      :root {
+        --bg: #0f172a;
+        --card: rgba(255, 255, 255, 0.05);
+        --border: rgba(255, 255, 255, 0.08);
+        --text: #f8fafc;
+        --muted: #94a3b8;
+        --accent: linear-gradient(135deg, #6366f1, #8b5cf6, #ec4899);
+      }
 
-		<!-- Favicon
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-		<link rel="icon" type="image/ico" href="favicon.ico" />
-		<script src="/dist/index.js" type="module"></script>
-	</head>
-	<body>
-		<!-- Primary Page Layout
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-		<div class="container" style="width: 95%; height: 100%">
-			<div class="row" style="height: 100%">
-				<div class="one-third column" style="margin-top: 25%">
-					<h4><b>Chat</b>, powered by Durable Objects</h4>
-					<p>
-						This chat room is hosted in a single Durable Object, running in one
-						process in one machine in one location, very close to the users.
-					</p>
-				</div>
-				<div class="two-thirds column" id="root"></div>
-			</div>
-		</div>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
 
-		<!-- End Document
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-	</body>
+      body {
+        font-family: "Inter", system-ui, -apple-system, sans-serif;
+        background: radial-gradient(
+            circle at 20% 20%,
+            rgba(99, 102, 241, 0.15),
+            transparent 40%
+          ),
+          radial-gradient(
+            circle at 80% 80%,
+            rgba(236, 72, 153, 0.15),
+            transparent 40%
+          ),
+          var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .app {
+        width: 95%;
+        max-width: 1400px;
+        height: 92vh;
+        display: grid;
+        grid-template-columns: 380px 1fr;
+        gap: 2rem;
+      }
+
+      .sidebar {
+        padding: 2rem;
+        border-radius: 24px;
+        background: var(--card);
+        backdrop-filter: blur(20px);
+        border: 1px solid var(--border);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .sidebar h1 {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        background: var(--accent);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .sidebar p {
+        color: var(--muted);
+        line-height: 1.6;
+        font-size: 0.95rem;
+      }
+
+      .chat-container {
+        border-radius: 24px;
+        background: var(--card);
+        backdrop-filter: blur(20px);
+        border: 1px solid var(--border);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+      }
+
+      #root {
+        flex: 1;
+        height: 100%;
+      }
+
+      /* Responsive */
+      @media (max-width: 900px) {
+        .app {
+          grid-template-columns: 1fr;
+          height: auto;
+        }
+
+        .sidebar {
+          text-align: center;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="app">
+      <div class="sidebar">
+        <h1>Chat</h1>
+        <p>
+          This chat was made by Kyler, just don't abuse it...
+        </p>
+      </div>
+
+      <div class="chat-container">
+        <div id="root"></div>
+      </div>
+    </div>
+  </body>
 </html>
