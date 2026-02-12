@@ -1,135 +1,198 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>Chat</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+<head>
+	<meta charset="utf-8" />
+	<title>Chat</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <!-- Modern Font -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <link rel="icon" type="image/ico" href="favicon.ico" />
-    <script src="/dist/index.js" type="module"></script>
+	<link rel="icon" type="image/ico" href="favicon.ico" />
+	<script src="/dist/index.js" type="module"></script>
 
-    <style>
-      :root {
-        --bg: #0f172a;
-        --card: rgba(255, 255, 255, 0.05);
-        --border: rgba(255, 255, 255, 0.08);
-        --text: #f8fafc;
-        --muted: #94a3b8;
-        --accent: linear-gradient(135deg, #6366f1, #8b5cf6, #ec4899);
-      }
+	<style>
+		/* ===== Base Layout (Your Structure Preserved) ===== */
 
-      * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-      }
+		html {
+			height: 100%;
+			margin: 0;
+			padding: 0;
+			display: flex;
+			flex-direction: column;
+			background: #0f172a;
+			font-family: "Inter", system-ui, -apple-system, sans-serif;
+			color: #f1f5f9;
+		}
 
-      body {
-        font-family: "Inter", system-ui, -apple-system, sans-serif;
-        background: radial-gradient(
-            circle at 20% 20%,
-            rgba(99, 102, 241, 0.15),
-            transparent 40%
-          ),
-          radial-gradient(
-            circle at 80% 80%,
-            rgba(236, 72, 153, 0.15),
-            transparent 40%
-          ),
-          var(--bg);
-        color: var(--text);
-        min-height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
+		body {
+			margin: 0;
+			height: 100%;
+			display: flex;
+			flex-direction: column;
+		}
 
-      .app {
-        width: 95%;
-        max-width: 1400px;
-        height: 92vh;
-        display: grid;
-        grid-template-columns: 380px 1fr;
-        gap: 2rem;
-      }
+		.chat {
+			padding-top: 40px;
+			display: flex;
+			flex-direction: column;
+			height: 100%;
+			max-width: 900px;
+			width: 100%;
+			margin: 0 auto;
+		}
 
-      .sidebar {
-        padding: 2rem;
-        border-radius: 24px;
-        background: var(--card);
-        backdrop-filter: blur(20px);
-        border: 1px solid var(--border);
-        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-      }
+		/* ===== Messages Container ===== */
 
-      .sidebar h1 {
-        font-size: 2rem;
-        font-weight: 700;
-        margin-bottom: 1rem;
-        background: var(--accent);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-      }
+		#root {
+			flex: 1;
+			display: flex;
+			flex-direction: column;
+			justify-content: flex-end;
+			overflow-y: auto;
+			height: 100%;
+			padding: 20px;
+			gap: 12px;
+			scroll-behavior: smooth;
+		}
 
-      .sidebar p {
-        color: var(--muted);
-        line-height: 1.6;
-        font-size: 0.95rem;
-      }
+		/* Modern scrollbar */
+		#root::-webkit-scrollbar {
+			width: 8px;
+		}
 
-      .chat-container {
-        border-radius: 24px;
-        background: var(--card);
-        backdrop-filter: blur(20px);
-        border: 1px solid var(--border);
-        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
-        overflow: hidden;
-        display: flex;
-        flex-direction: column;
-      }
+		#root::-webkit-scrollbar-thumb {
+			background: rgba(255,255,255,0.1);
+			border-radius: 8px;
+		}
 
-      #root {
-        flex: 1;
-        height: 100%;
-      }
+		/* ===== Message Styling ===== */
 
-      /* Responsive */
-      @media (max-width: 900px) {
-        .app {
-          grid-template-columns: 1fr;
-          height: auto;
-        }
+		.message {
+			position: relative;
+			max-width: 75%;
+			padding: 14px 18px;
+			border-radius: 18px;
+			font-size: 14px;
+			line-height: 1.5;
+			margin-bottom: 10px;
+			background: rgba(255,255,255,0.06);
+			border: 1px solid rgba(255,255,255,0.08);
+			backdrop-filter: blur(10px);
+			animation: fadeIn 0.2s ease-in-out;
+		}
 
-        .sidebar {
-          text-align: center;
-        }
-      }
-    </style>
-  </head>
+		/* If your JS adds .mine, this will style your messages */
+		.message.mine {
+			align-self: flex-end;
+			background: linear-gradient(135deg, #6366f1, #8b5cf6);
+			color: white;
+			border-bottom-right-radius: 6px;
+			box-shadow: 0 6px 20px rgba(99,102,241,0.4);
+		}
 
-  <body>
-    <div class="app">
-      <div class="sidebar">
-        <h1>Chat</h1>
-        <p>
-          This chat was made by Kyler, just don't abuse it...
-        </p>
-      </div>
+		.message .user {
+			font-weight: 600;
+			font-size: 12px;
+			margin-bottom: 4px;
+			opacity: 0.7;
+			text-align: left; /* fixed from original right align */
+		}
 
-      <div class="chat-container">
-        <div id="root"></div>
-      </div>
-    </div>
-  </body>
+		/* Remove button */
+		.message .remove {
+			position: absolute;
+			top: 50%;
+			transform: translateY(-50%);
+			left: -50px;
+			width: 24px;
+			height: 24px;
+			border-radius: 50%;
+			border: none;
+			background: rgba(255,255,255,0.08);
+			color: #94a3b8;
+			cursor: pointer;
+			display: none;
+			transition: all 0.2s ease;
+		}
+
+		.message:hover .remove {
+			display: block;
+		}
+
+		.message .remove:hover {
+			background: #ef4444;
+			color: white;
+		}
+
+		/* ===== Input Area ===== */
+
+		.send-message {
+			display: flex;
+			gap: 10px;
+			padding: 16px;
+			border-top: 1px solid rgba(255,255,255,0.08);
+			background: rgba(255,255,255,0.04);
+			backdrop-filter: blur(12px);
+		}
+
+		.my-input-text {
+			flex: 1;
+			padding: 12px 16px;
+			border-radius: 999px;
+			border: 1px solid rgba(255,255,255,0.1);
+			background: rgba(255,255,255,0.05);
+			color: white;
+			outline: none;
+			transition: all 0.2s ease;
+		}
+
+		.my-input-text:focus {
+			border-color: #6366f1;
+			box-shadow: 0 0 0 3px rgba(99,102,241,0.3);
+		}
+
+		.my-input-text::placeholder {
+			color: #64748b;
+		}
+
+		.send-message button {
+			padding: 12px 20px;
+			border-radius: 999px;
+			border: none;
+			cursor: pointer;
+			font-weight: 600;
+			background: linear-gradient(135deg, #6366f1, #8b5cf6);
+			color: white;
+			transition: all 0.2s ease;
+		}
+
+		.send-message button:hover {
+			transform: translateY(-1px);
+			box-shadow: 0 6px 20px rgba(99,102,241,0.4);
+		}
+
+		@keyframes fadeIn {
+			from { opacity: 0; transform: translateY(4px); }
+			to { opacity: 1; transform: translateY(0); }
+		}
+	</style>
+</head>
+
+<body>
+	<div class="chat">
+		<div id="root"></div>
+
+		<form class="send-message">
+			<input
+				type="text"
+				class="my-input-text"
+				placeholder="Type your message..."
+				autocomplete="off"
+			/>
+			<button type="submit">Send</button>
+		</form>
+	</div>
+</body>
 </html>
